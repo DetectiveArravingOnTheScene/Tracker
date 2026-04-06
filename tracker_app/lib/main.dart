@@ -1,30 +1,66 @@
-import 'package:cristalyse/cristalyse.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tracker_app/app.dart';
 import 'package:tracker_app/domain/entities/trackitng_entity.dart';
 
 final List<TrackingEntity> mockData = [
   DoubleTrackingEntity(
     datatype: .double,
-    title: "Test stat",
+    title: "Test stat 1",
     values: [
-      TrackingValue(
+      TrackingEntry(
         time: DateTime.now().subtract(Duration(days: 2)),
         value: 10,
       ),
-      TrackingValue(
+      TrackingEntry(
         time: DateTime.now().subtract(Duration(days: 1)),
         value: 12,
       ),
-      TrackingValue(time: DateTime.now(), value: 14),
+      TrackingEntry(time: DateTime.now(), value: 14),
+    ],
+  ),
+  DoubleTrackingEntity(
+    datatype: .double,
+    title: "Test stat 2",
+    values: [
+      TrackingEntry(
+        time: DateTime.now().subtract(Duration(days: 2)),
+        value: 10,
+      ),
+      TrackingEntry(
+        time: DateTime.now().subtract(Duration(days: 1)),
+        value: 12,
+      ),
+      TrackingEntry(time: DateTime.now(), value: 14),
+    ],
+  ),
+  DoubleTrackingEntity(
+    datatype: .double,
+    title: "Test stat 3",
+    values: [
+      TrackingEntry(
+        time: DateTime.now().subtract(Duration(days: 2)),
+        value: 10,
+      ),
+      TrackingEntry(
+        time: DateTime.now().subtract(Duration(days: 1)),
+        value: 12,
+      ),
+      TrackingEntry(time: DateTime.now(), value: 14),
     ],
   ),
 ];
 
-List<Map<String, dynamic>> _map(List<TrackingValue> list) {
+final DateFormat formatter = DateFormat.yMd();
+
+List<Map<String, dynamic>> map(List<TrackingEntry> list) {
   final List<Map<String, dynamic>> result = [];
 
   for (var item in list) {
-    Map<String, dynamic> value = {'date': item.time, 'value': item.value};
+    Map<String, dynamic> value = {
+      'date': formatter.format(item.time),
+      'value': item.value,
+    };
     result.add(value);
   }
 
@@ -33,42 +69,4 @@ List<Map<String, dynamic>> _map(List<TrackingValue> list) {
 
 void main() {
   runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            children: [
-              for (var item in mockData)
-                Expanded(
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Text(item.title),
-                        Expanded(
-                          child: CristalyseChart()
-                              .data(_map(mockData.first.values))
-                              .mapping(x: 'date', y: 'value')
-                              .geomLine(strokeWidth: 3)
-                              .geomPoint(size: 4)
-                              .scaleXOrdinal()
-                              .scaleYContinuous(min: 0)
-                              .build(),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }

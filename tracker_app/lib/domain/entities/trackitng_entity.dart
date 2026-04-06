@@ -1,7 +1,7 @@
 sealed class TrackingEntity<T> {
   final String title;
   final TrackingDatatype datatype;
-  final List<TrackingValue<T>> values;
+  final List<TrackingEntry<T>> values;
 
   const TrackingEntity({
     required this.title,
@@ -36,9 +36,9 @@ final class IntTrackingEntity extends TrackingEntity<int> {
 
 enum TrackingDatatype { double, time, int }
 
-class TrackingValue<T> {
+class TrackingEntry<T> {
   final T value;
   final DateTime time;
 
-  const TrackingValue({required this.time, required this.value});
+  const TrackingEntry({required this.time, required this.value});
 }
