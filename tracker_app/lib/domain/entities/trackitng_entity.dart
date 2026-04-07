@@ -1,3 +1,5 @@
+import 'package:tracker_app/domain/entities/tracking_entry.dart';
+
 sealed class TrackingEntity<T> {
   final String title;
   final TrackingDatatype datatype;
@@ -35,10 +37,3 @@ final class IntTrackingEntity extends TrackingEntity<int> {
 }
 
 enum TrackingDatatype { double, time, int }
-
-class TrackingEntry<T> {
-  final T value;
-  final DateTime time;
-
-  const TrackingEntry({required this.time, required this.value});
-}

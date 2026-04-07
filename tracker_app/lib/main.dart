@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker_app/app.dart';
+import 'package:tracker_app/domain/entities/tracking_entry.dart';
 import 'package:tracker_app/domain/entities/trackitng_entity.dart';
 
 final List<TrackingEntity> mockData = [
