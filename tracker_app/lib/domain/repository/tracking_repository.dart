@@ -1,9 +1,14 @@
-import 'package:tracker_app/data/data_sources/drift_local_data_source/local_data_source_impl.dart';
+import 'package:tracker_app/domain/entities/tracking_entry.dart';
 import 'package:tracker_app/domain/entities/trackitng_entity.dart';
 
-class TrackingRepository {
-  final LocalDataSourceImpl _db = LocalDataSourceImpl();
-  Future<List<TrackingEntity>> loadEntities() async {
-    final rows = await _db.loadEntities();
-  }
+abstract class TrackingRepository {
+  Future<List<TrackingEntity>> loadData();
+
+  Future<void> upsertEntity(TrackingEntity entity);
+
+  Future<void> deleteEntity(TrackingEntity entity);
+
+  Future<void> addEntry(TrackingEntry entry);
+
+  Future<void> deleteEntry(TrackingEntry entry);
 }

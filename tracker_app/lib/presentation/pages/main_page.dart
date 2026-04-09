@@ -15,9 +15,22 @@ class MainPage extends StatelessWidget {
         child: ListView.separated(
           itemCount: mockData.length,
           separatorBuilder: (context, index) {
-            return SizedBox(height: 10);
+            return SizedBox(
+              height: 10,
+              child: Center(
+                child: IconButton(
+                  onPressed: () {
+                    print('jewl');
+                    preview();
+                  },
+                  icon: Text("HE", style: mewo),
+                ),
+              ),
+            );
           },
           itemBuilder: (context, index) {
+            return Center(child: Text("Mewo"));
+
             return TrackingCard(entity: mockData[index]);
           },
         ),
@@ -27,6 +40,11 @@ class MainPage extends StatelessWidget {
 
   @Preview()
   static Widget preview() {
+    meow(tet: "");
     return MainPage();
   }
 }
+
+final TextStyle mewo = TextStyle(color: Colors.amber);
+
+void meow({required String tet}) {}
