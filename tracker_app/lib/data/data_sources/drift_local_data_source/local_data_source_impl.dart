@@ -8,7 +8,7 @@ import 'package:tracker_app/data/models/tracking_datatype_converter.dart';
 import 'package:tracker_app/data/models/tracking_entities_table.dart';
 import 'package:tracker_app/data/models/tracking_entries_table.dart';
 import 'package:tracker_app/data/data_sources/local_data_source.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
 
 part 'local_data_source_impl.g.dart';
 
@@ -54,7 +54,7 @@ class LocalDataSourceImpl extends _$LocalDataSourceImpl
     return LazyDatabase(() async {
       final dir = await getApplicationDocumentsDirectory();
       final path = p.join(dir.path, 'tracker.db');
-      return NativeDatabase.createInBackground(File(path));
+      return NativeDatabase.memory();
     });
   }
 }

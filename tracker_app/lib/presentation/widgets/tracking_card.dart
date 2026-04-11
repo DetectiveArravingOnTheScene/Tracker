@@ -2,7 +2,7 @@ import 'package:cristalyse/cristalyse.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tracker_app/domain/entities/tracking_entry.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
 import 'package:tracker_app/presentation/theme/app_chart_theme.dart';
 import 'package:tracker_app/presentation/theme/app_fonts.dart';
 import 'package:tracker_app/presentation/widgets/app_card.dart';
@@ -45,7 +45,7 @@ List<Map<String, dynamic>> map(List<TrackingEntry> list) {
 
   for (var item in list) {
     Map<String, dynamic> value = {
-      'date': formatter.format(item.time),
+      'date': item.time.toString(),
       'value': item.value,
     };
     result.add(value);
@@ -53,5 +53,3 @@ List<Map<String, dynamic>> map(List<TrackingEntry> list) {
 
   return result;
 }
-
-final DateFormat formatter = DateFormat.yMd();

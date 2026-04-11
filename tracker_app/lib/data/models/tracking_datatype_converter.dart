@@ -1,5 +1,5 @@
 import 'package:drift/drift.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
 
 class TrackingDatatypeConverter extends TypeConverter<TrackingDatatype, int> {
   const TrackingDatatypeConverter();

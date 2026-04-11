@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entry.dart';
 import 'package:tracker_app/domain/repository/tracking_repository.dart';
 
 class TrackingService extends ChangeNotifier {
@@ -16,9 +17,17 @@ class TrackingService extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> upsertEntity(TrackingEntity entity) async {
-    await _repository.upsertEntity(entity);
+  Future<int> upsertEntity(TrackingEntity entity) async {
+    final id = await _repository.upsertEntity(entity);
     _data = await _repository.loadData();
     notifyListeners();
+    return id;
+  }
+
+  Future<int> addEntry(TrackingEntry entry) async {
+    final id = await _repository.addEntry(entry);
+    _data = await _repository.loadData();
+    notifyListeners();
+    return id;
   }
 }

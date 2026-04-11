@@ -2,7 +2,7 @@ import 'package:tracker_app/data/data_sources/local_data_source.dart';
 import 'package:tracker_app/data/mappers/tracking_entity_mapper.dart';
 import 'package:tracker_app/data/mappers/tracking_entry_mapper.dart';
 import 'package:tracker_app/domain/entities/tracking_entry.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
 import 'package:tracker_app/domain/repository/tracking_repository.dart';
 
 class TrackingRepositoryImpl implements TrackingRepository {
@@ -15,12 +15,20 @@ class TrackingRepositoryImpl implements TrackingRepository {
     final entities = await _localDataSource.loadEntities();
     final entries = await _localDataSource.loadEntries();
 
+    final Map<int, TrackingDatatype> entityTypes = {
+      for (var e in entities) e.id: e.datatype,
+    };
+
     final Map<int, List<TrackingEntry>> map = {};
 
     for (var item in entries) {
-      map
-          .putIfAbsent(item.entityId, () => [])
-          .add(TrackingEntryMapper.toEntity(item));
+      final type = entityTypes[item.entityId];
+
+      if (type != null) {
+        map
+            .putIfAbsent(item.entityId, () => [])
+            .add(TrackingEntryMapper.toEntity(item, type));
+      }
     }
 
     return entities
@@ -29,8 +37,8 @@ class TrackingRepositoryImpl implements TrackingRepository {
   }
 
   @override
-  Future<void> upsertEntity(TrackingEntity entity) async {
-    await _localDataSource.upsertTrackingEntity(
+  Future<int> upsertEntity(TrackingEntity entity) async {
+    return await _localDataSource.upsertTrackingEntity(
       TrackingEntityMapper.toModel(entity),
     );
   }
@@ -43,8 +51,8 @@ class TrackingRepositoryImpl implements TrackingRepository {
   }
 
   @override
-  Future<void> addEntry(TrackingEntry entry) async {
-    await _localDataSource.addEntry(TrackingEntryMapper.toModel(entry));
+  Future<int> addEntry(TrackingEntry entry) async {
+    return await _localDataSource.addEntry(TrackingEntryMapper.toModel(entry));
   }
 
   @override

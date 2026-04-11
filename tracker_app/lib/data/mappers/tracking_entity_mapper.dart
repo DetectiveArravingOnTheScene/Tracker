@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:tracker_app/data/data_sources/drift_local_data_source/local_data_source_impl.dart';
 import 'package:tracker_app/domain/entities/tracking_entry.dart';
-import 'package:tracker_app/domain/entities/trackitng_entity.dart';
+import 'package:tracker_app/domain/entities/tracking_entity.dart';
 
 abstract class TrackingEntityMapper {
   static TrackingEntity toEntity(
@@ -10,25 +10,18 @@ abstract class TrackingEntityMapper {
   }) {
     switch (model.datatype) {
       case TrackingDatatype.double:
-        return DoubleTrackingEntity(
+        return TrackingEntity<double>(
           id: model.id,
           datatype: model.datatype,
           title: model.title,
-          values: values as List<TrackingEntry<double>>? ?? [],
-        );
-      case TrackingDatatype.time:
-        return TimeTrackingEntity(
-          id: model.id,
-          datatype: model.datatype,
-          title: model.title,
-          values: values as List<TrackingEntry<DateTime>>? ?? [],
+          values: values?.whereType<TrackingEntry<double>>().toList() ?? [],
         );
       case TrackingDatatype.int:
-        return IntTrackingEntity(
+        return TrackingEntity<int>(
           id: model.id,
           datatype: model.datatype,
           title: model.title,
-          values: values as List<TrackingEntry<int>>? ?? [],
+          values: values?.whereType<TrackingEntry<int>>().toList() ?? [],
         );
     }
   }
@@ -36,7 +29,7 @@ abstract class TrackingEntityMapper {
   static TrackingEntitiesTableCompanion toModel(TrackingEntity entity) {
     return TrackingEntitiesTableCompanion(
       datatype: Value(entity.datatype),
-      id: Value(entity.id),
+      id: entity.id == null ? const Value.absent() : Value(entity.id!),
       title: Value(entity.title),
     );
   }

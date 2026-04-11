@@ -307,48 +307,17 @@ class $TrackingEntriesTableTable extends TrackingEntriesTable
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _doubleValueMeta = const VerificationMeta(
-    'doubleValue',
-  );
+  static const VerificationMeta _valueMeta = const VerificationMeta('value');
   @override
-  late final GeneratedColumn<double> doubleValue = GeneratedColumn<double>(
-    'double_value',
+  late final GeneratedColumn<String> value = GeneratedColumn<String>(
+    'value',
     aliasedName,
-    true,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _intValueMeta = const VerificationMeta(
-    'intValue',
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
   );
   @override
-  late final GeneratedColumn<int> intValue = GeneratedColumn<int>(
-    'int_value',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _timeValueMeta = const VerificationMeta(
-    'timeValue',
-  );
-  @override
-  late final GeneratedColumn<DateTime> timeValue = GeneratedColumn<DateTime>(
-    'time_value',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    entityId,
-    time,
-    doubleValue,
-    intValue,
-    timeValue,
-  ];
+  List<GeneratedColumn> get $columns => [id, entityId, time, value];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -380,26 +349,13 @@ class $TrackingEntriesTableTable extends TrackingEntriesTable
     } else if (isInserting) {
       context.missing(_timeMeta);
     }
-    if (data.containsKey('double_value')) {
+    if (data.containsKey('value')) {
       context.handle(
-        _doubleValueMeta,
-        doubleValue.isAcceptableOrUnknown(
-          data['double_value']!,
-          _doubleValueMeta,
-        ),
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
       );
-    }
-    if (data.containsKey('int_value')) {
-      context.handle(
-        _intValueMeta,
-        intValue.isAcceptableOrUnknown(data['int_value']!, _intValueMeta),
-      );
-    }
-    if (data.containsKey('time_value')) {
-      context.handle(
-        _timeValueMeta,
-        timeValue.isAcceptableOrUnknown(data['time_value']!, _timeValueMeta),
-      );
+    } else if (isInserting) {
+      context.missing(_valueMeta);
     }
     return context;
   }
@@ -425,18 +381,10 @@ class $TrackingEntriesTableTable extends TrackingEntriesTable
         DriftSqlType.dateTime,
         data['${effectivePrefix}time'],
       )!,
-      doubleValue: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}double_value'],
-      ),
-      intValue: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}int_value'],
-      ),
-      timeValue: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}time_value'],
-      ),
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -451,16 +399,12 @@ class TrackingEntriesTableData extends DataClass
   final int id;
   final int entityId;
   final DateTime time;
-  final double? doubleValue;
-  final int? intValue;
-  final DateTime? timeValue;
+  final String value;
   const TrackingEntriesTableData({
     required this.id,
     required this.entityId,
     required this.time,
-    this.doubleValue,
-    this.intValue,
-    this.timeValue,
+    required this.value,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -468,15 +412,7 @@ class TrackingEntriesTableData extends DataClass
     map['id'] = Variable<int>(id);
     map['entity_id'] = Variable<int>(entityId);
     map['time'] = Variable<DateTime>(time);
-    if (!nullToAbsent || doubleValue != null) {
-      map['double_value'] = Variable<double>(doubleValue);
-    }
-    if (!nullToAbsent || intValue != null) {
-      map['int_value'] = Variable<int>(intValue);
-    }
-    if (!nullToAbsent || timeValue != null) {
-      map['time_value'] = Variable<DateTime>(timeValue);
-    }
+    map['value'] = Variable<String>(value);
     return map;
   }
 
@@ -485,15 +421,7 @@ class TrackingEntriesTableData extends DataClass
       id: Value(id),
       entityId: Value(entityId),
       time: Value(time),
-      doubleValue: doubleValue == null && nullToAbsent
-          ? const Value.absent()
-          : Value(doubleValue),
-      intValue: intValue == null && nullToAbsent
-          ? const Value.absent()
-          : Value(intValue),
-      timeValue: timeValue == null && nullToAbsent
-          ? const Value.absent()
-          : Value(timeValue),
+      value: Value(value),
     );
   }
 
@@ -506,9 +434,7 @@ class TrackingEntriesTableData extends DataClass
       id: serializer.fromJson<int>(json['id']),
       entityId: serializer.fromJson<int>(json['entityId']),
       time: serializer.fromJson<DateTime>(json['time']),
-      doubleValue: serializer.fromJson<double?>(json['doubleValue']),
-      intValue: serializer.fromJson<int?>(json['intValue']),
-      timeValue: serializer.fromJson<DateTime?>(json['timeValue']),
+      value: serializer.fromJson<String>(json['value']),
     );
   }
   @override
@@ -518,9 +444,7 @@ class TrackingEntriesTableData extends DataClass
       'id': serializer.toJson<int>(id),
       'entityId': serializer.toJson<int>(entityId),
       'time': serializer.toJson<DateTime>(time),
-      'doubleValue': serializer.toJson<double?>(doubleValue),
-      'intValue': serializer.toJson<int?>(intValue),
-      'timeValue': serializer.toJson<DateTime?>(timeValue),
+      'value': serializer.toJson<String>(value),
     };
   }
 
@@ -528,16 +452,12 @@ class TrackingEntriesTableData extends DataClass
     int? id,
     int? entityId,
     DateTime? time,
-    Value<double?> doubleValue = const Value.absent(),
-    Value<int?> intValue = const Value.absent(),
-    Value<DateTime?> timeValue = const Value.absent(),
+    String? value,
   }) => TrackingEntriesTableData(
     id: id ?? this.id,
     entityId: entityId ?? this.entityId,
     time: time ?? this.time,
-    doubleValue: doubleValue.present ? doubleValue.value : this.doubleValue,
-    intValue: intValue.present ? intValue.value : this.intValue,
-    timeValue: timeValue.present ? timeValue.value : this.timeValue,
+    value: value ?? this.value,
   );
   TrackingEntriesTableData copyWithCompanion(
     TrackingEntriesTableCompanion data,
@@ -546,11 +466,7 @@ class TrackingEntriesTableData extends DataClass
       id: data.id.present ? data.id.value : this.id,
       entityId: data.entityId.present ? data.entityId.value : this.entityId,
       time: data.time.present ? data.time.value : this.time,
-      doubleValue: data.doubleValue.present
-          ? data.doubleValue.value
-          : this.doubleValue,
-      intValue: data.intValue.present ? data.intValue.value : this.intValue,
-      timeValue: data.timeValue.present ? data.timeValue.value : this.timeValue,
+      value: data.value.present ? data.value.value : this.value,
     );
   }
 
@@ -560,16 +476,13 @@ class TrackingEntriesTableData extends DataClass
           ..write('id: $id, ')
           ..write('entityId: $entityId, ')
           ..write('time: $time, ')
-          ..write('doubleValue: $doubleValue, ')
-          ..write('intValue: $intValue, ')
-          ..write('timeValue: $timeValue')
+          ..write('value: $value')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id, entityId, time, doubleValue, intValue, timeValue);
+  int get hashCode => Object.hash(id, entityId, time, value);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -577,9 +490,7 @@ class TrackingEntriesTableData extends DataClass
           other.id == this.id &&
           other.entityId == this.entityId &&
           other.time == this.time &&
-          other.doubleValue == this.doubleValue &&
-          other.intValue == this.intValue &&
-          other.timeValue == this.timeValue);
+          other.value == this.value);
 }
 
 class TrackingEntriesTableCompanion
@@ -587,41 +498,32 @@ class TrackingEntriesTableCompanion
   final Value<int> id;
   final Value<int> entityId;
   final Value<DateTime> time;
-  final Value<double?> doubleValue;
-  final Value<int?> intValue;
-  final Value<DateTime?> timeValue;
+  final Value<String> value;
   const TrackingEntriesTableCompanion({
     this.id = const Value.absent(),
     this.entityId = const Value.absent(),
     this.time = const Value.absent(),
-    this.doubleValue = const Value.absent(),
-    this.intValue = const Value.absent(),
-    this.timeValue = const Value.absent(),
+    this.value = const Value.absent(),
   });
   TrackingEntriesTableCompanion.insert({
     this.id = const Value.absent(),
     required int entityId,
     required DateTime time,
-    this.doubleValue = const Value.absent(),
-    this.intValue = const Value.absent(),
-    this.timeValue = const Value.absent(),
+    required String value,
   }) : entityId = Value(entityId),
-       time = Value(time);
+       time = Value(time),
+       value = Value(value);
   static Insertable<TrackingEntriesTableData> custom({
     Expression<int>? id,
     Expression<int>? entityId,
     Expression<DateTime>? time,
-    Expression<double>? doubleValue,
-    Expression<int>? intValue,
-    Expression<DateTime>? timeValue,
+    Expression<String>? value,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (entityId != null) 'entity_id': entityId,
       if (time != null) 'time': time,
-      if (doubleValue != null) 'double_value': doubleValue,
-      if (intValue != null) 'int_value': intValue,
-      if (timeValue != null) 'time_value': timeValue,
+      if (value != null) 'value': value,
     });
   }
 
@@ -629,17 +531,13 @@ class TrackingEntriesTableCompanion
     Value<int>? id,
     Value<int>? entityId,
     Value<DateTime>? time,
-    Value<double?>? doubleValue,
-    Value<int?>? intValue,
-    Value<DateTime?>? timeValue,
+    Value<String>? value,
   }) {
     return TrackingEntriesTableCompanion(
       id: id ?? this.id,
       entityId: entityId ?? this.entityId,
       time: time ?? this.time,
-      doubleValue: doubleValue ?? this.doubleValue,
-      intValue: intValue ?? this.intValue,
-      timeValue: timeValue ?? this.timeValue,
+      value: value ?? this.value,
     );
   }
 
@@ -655,14 +553,8 @@ class TrackingEntriesTableCompanion
     if (time.present) {
       map['time'] = Variable<DateTime>(time.value);
     }
-    if (doubleValue.present) {
-      map['double_value'] = Variable<double>(doubleValue.value);
-    }
-    if (intValue.present) {
-      map['int_value'] = Variable<int>(intValue.value);
-    }
-    if (timeValue.present) {
-      map['time_value'] = Variable<DateTime>(timeValue.value);
+    if (value.present) {
+      map['value'] = Variable<String>(value.value);
     }
     return map;
   }
@@ -673,9 +565,7 @@ class TrackingEntriesTableCompanion
           ..write('id: $id, ')
           ..write('entityId: $entityId, ')
           ..write('time: $time, ')
-          ..write('doubleValue: $doubleValue, ')
-          ..write('intValue: $intValue, ')
-          ..write('timeValue: $timeValue')
+          ..write('value: $value')
           ..write(')'))
         .toString();
   }
@@ -994,18 +884,14 @@ typedef $$TrackingEntriesTableTableCreateCompanionBuilder =
       Value<int> id,
       required int entityId,
       required DateTime time,
-      Value<double?> doubleValue,
-      Value<int?> intValue,
-      Value<DateTime?> timeValue,
+      required String value,
     });
 typedef $$TrackingEntriesTableTableUpdateCompanionBuilder =
     TrackingEntriesTableCompanion Function({
       Value<int> id,
       Value<int> entityId,
       Value<DateTime> time,
-      Value<double?> doubleValue,
-      Value<int?> intValue,
-      Value<DateTime?> timeValue,
+      Value<String> value,
     });
 
 final class $$TrackingEntriesTableTableReferences
@@ -1063,18 +949,8 @@ class $$TrackingEntriesTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<double> get doubleValue => $composableBuilder(
-    column: $table.doubleValue,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get intValue => $composableBuilder(
-    column: $table.intValue,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get timeValue => $composableBuilder(
-    column: $table.timeValue,
+  ColumnFilters<String> get value => $composableBuilder(
+    column: $table.value,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1122,18 +998,8 @@ class $$TrackingEntriesTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<double> get doubleValue => $composableBuilder(
-    column: $table.doubleValue,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get intValue => $composableBuilder(
-    column: $table.intValue,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get timeValue => $composableBuilder(
-    column: $table.timeValue,
+  ColumnOrderings<String> get value => $composableBuilder(
+    column: $table.value,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -1177,16 +1043,8 @@ class $$TrackingEntriesTableTableAnnotationComposer
   GeneratedColumn<DateTime> get time =>
       $composableBuilder(column: $table.time, builder: (column) => column);
 
-  GeneratedColumn<double> get doubleValue => $composableBuilder(
-    column: $table.doubleValue,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<int> get intValue =>
-      $composableBuilder(column: $table.intValue, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get timeValue =>
-      $composableBuilder(column: $table.timeValue, builder: (column) => column);
+  GeneratedColumn<String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
 
   $$TrackingEntitiesTableTableAnnotationComposer get entityId {
     final $$TrackingEntitiesTableTableAnnotationComposer composer =
@@ -1252,32 +1110,24 @@ class $$TrackingEntriesTableTableTableManager
                 Value<int> id = const Value.absent(),
                 Value<int> entityId = const Value.absent(),
                 Value<DateTime> time = const Value.absent(),
-                Value<double?> doubleValue = const Value.absent(),
-                Value<int?> intValue = const Value.absent(),
-                Value<DateTime?> timeValue = const Value.absent(),
+                Value<String> value = const Value.absent(),
               }) => TrackingEntriesTableCompanion(
                 id: id,
                 entityId: entityId,
                 time: time,
-                doubleValue: doubleValue,
-                intValue: intValue,
-                timeValue: timeValue,
+                value: value,
               ),
           createCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
                 required int entityId,
                 required DateTime time,
-                Value<double?> doubleValue = const Value.absent(),
-                Value<int?> intValue = const Value.absent(),
-                Value<DateTime?> timeValue = const Value.absent(),
+                required String value,
               }) => TrackingEntriesTableCompanion.insert(
                 id: id,
                 entityId: entityId,
                 time: time,
-                doubleValue: doubleValue,
-                intValue: intValue,
-                timeValue: timeValue,
+                value: value,
               ),
           withReferenceMapper: (p0) => p0
               .map(
