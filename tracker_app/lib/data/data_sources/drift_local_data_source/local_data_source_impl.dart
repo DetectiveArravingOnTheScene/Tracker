@@ -31,7 +31,7 @@ class LocalDataSourceImpl extends _$LocalDataSourceImpl
   }
 
   @override
-  Future<int> deleteEntry(TrackingEntriesTableData model) async {
+  Future<int> deleteEntry(TrackingEntriesTableCompanion model) async {
     return await delete(trackingEntriesTable).delete(model);
   }
 
@@ -46,7 +46,7 @@ class LocalDataSourceImpl extends _$LocalDataSourceImpl
   }
 
   @override
-  Future<int> deleteTrackingEntity(TrackingEntitiesTableData model) async {
+  Future<int> deleteTrackingEntity(TrackingEntitiesTableCompanion model) async {
     return await delete(trackingEntitiesTable).delete(model);
   }
 

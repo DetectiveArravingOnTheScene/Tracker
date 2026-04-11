@@ -1,7 +1,8 @@
 import 'package:cristalyse/cristalyse.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:tracker_app/domain/entities/tracking_entry.dart';
 import 'package:tracker_app/domain/entities/trackitng_entity.dart';
-import 'package:tracker_app/main.dart';
 import 'package:tracker_app/presentation/theme/app_chart_theme.dart';
 import 'package:tracker_app/presentation/theme/app_fonts.dart';
 import 'package:tracker_app/presentation/widgets/app_card.dart';
@@ -38,3 +39,19 @@ class TrackingCard extends StatelessWidget {
     );
   }
 }
+
+List<Map<String, dynamic>> map(List<TrackingEntry> list) {
+  final List<Map<String, dynamic>> result = [];
+
+  for (var item in list) {
+    Map<String, dynamic> value = {
+      'date': formatter.format(item.time),
+      'value': item.value,
+    };
+    result.add(value);
+  }
+
+  return result;
+}
+
+final DateFormat formatter = DateFormat.yMd();

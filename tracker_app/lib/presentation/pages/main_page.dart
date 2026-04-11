@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widget_previews.dart';
-import 'package:tracker_app/main.dart';
+import 'package:provider/provider.dart';
+import 'package:tracker_app/domain/service/tracking_service.dart';
 import 'package:tracker_app/presentation/widgets/tracking_card.dart';
 
 class MainPage extends StatelessWidget {
@@ -8,43 +8,25 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Main Page")),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.separated(
-          itemCount: mockData.length,
-          separatorBuilder: (context, index) {
-            return SizedBox(
-              height: 10,
-              child: Center(
-                child: IconButton(
-                  onPressed: () {
-                    print('jewl');
-                    preview();
-                  },
-                  icon: Text("HE", style: mewo),
-                ),
-              ),
-            );
-          },
-          itemBuilder: (context, index) {
-            return Center(child: Text("Mewo"));
-
-            return TrackingCard(entity: mockData[index]);
-          },
-        ),
-      ),
+    return Consumer<TrackingService>(
+      builder: (context, service, _) {
+        return Scaffold(
+          appBar: AppBar(title: Text("Main Page")),
+          floatingActionButton: FloatingActionButton(onPressed: () {}),
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView.separated(
+              itemCount: service.data.length,
+              separatorBuilder: (context, index) {
+                return SizedBox(height: 16);
+              },
+              itemBuilder: (context, index) {
+                return TrackingCard(entity: service.data[index]);
+              },
+            ),
+          ),
+        );
+      },
     );
   }
-
-  @Preview()
-  static Widget preview() {
-    meow(tet: "");
-    return MainPage();
-  }
 }
-
-final TextStyle mewo = TextStyle(color: Colors.amber);
-
-void meow({required String tet}) {}
