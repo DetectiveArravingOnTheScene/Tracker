@@ -12,7 +12,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<TrackingService>.value(
       value: service,
-      child: MaterialApp(theme: AppThemes.modernDarkTheme, home: MainPage()),
+      child: MaterialApp(theme: AppTheme.dark, home: MainPage()),
     );
   }
 }
