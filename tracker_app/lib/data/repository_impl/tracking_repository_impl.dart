@@ -11,6 +11,22 @@ class TrackingRepositoryImpl implements TrackingRepository {
   const TrackingRepositoryImpl(this._localDataSource);
 
   @override
+  Stream<List<TrackingEntity>> watchData() {
+    return _localDataSource.watchData().map((models) {
+      return models.map((model) {
+        final domainEntries = model.entries.map((entry) {
+          return TrackingEntryMapper.toEntity(entry, model.entity.datatype);
+        }).toList();
+
+        return TrackingEntityMapper.toEntity(
+          model.entity,
+          values: domainEntries,
+        );
+      }).toList();
+    });
+  }
+
+  @override
   Future<List<TrackingEntity>> loadData() async {
     final entities = await _localDataSource.loadEntities();
     final entries = await _localDataSource.loadEntries();

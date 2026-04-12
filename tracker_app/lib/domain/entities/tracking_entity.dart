@@ -10,7 +10,7 @@ final class TrackingEntity<T> {
     required this.id,
     required this.title,
     required this.datatype,
-    required this.values,
+    this.values = const [],
   });
 }
 
