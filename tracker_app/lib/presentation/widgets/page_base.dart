@@ -15,6 +15,7 @@ class PageBase extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
+      drawer: Drawer(),
       floatingActionButton: floatingActionButton,
       body: Padding(padding: const EdgeInsets.all(8.0), child: child),
     );
